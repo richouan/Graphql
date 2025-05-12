@@ -4,11 +4,29 @@ body {
   font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #121212;
+  background: linear-gradient(135deg, #121212 0%, #1a1a1a 50%, #121212 100%);
   color: #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
+  min-height: 100vh;
+  background-attachment: fixed;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+    radial-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px, 20px 20px;
+  background-position: 0 0, 20px 20px;
+  pointer-events: none;
 }
 
 .login-container,
@@ -106,6 +124,79 @@ body {
   width: 150px;
 }
 
+.user-info .project-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.5em;
+  background: linear-gradient(90deg, #fff, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.user-info .project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.info-content {
+  padding: 10px;
+}
+
+.user-info .info-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.user-info .info-row:last-child {
+  border-bottom: none;
+}
+
+.info-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 255, 255, 0.1);
+  border-radius: 50%;
+  margin-right: 15px;
+  font-size: 1.1em;
+}
+
+.user-info .label {
+  display: block;
+  color: #888;
+  font-size: 0.9em;
+  min-width: 120px;
+}
+
+.user-info .value {
+  color: #fff;
+  font-weight: 500;
+  flex-grow: 1;
+  text-align: right;
+}
+
+/* Add a subtle hover effect for the info rows */
+.user-info .info-row:hover {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+.user-info .info-row:hover .info-icon {
+  background: rgba(0, 255, 255, 0.2);
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
 .graph-container {
   position: relative;
   margin-top: 20px;
@@ -131,16 +222,21 @@ svg {
 .tooltip {
   position: absolute;
   padding: 10px;
-  background: rgba(30, 30, 30, 0.9);
+  background: rgba(30, 30, 30, 0.95);
   color: white;
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 12px;
   pointer-events: none;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
   z-index: 1000;
-  transform: translate(-50%, -100%);
-  transition: all 0.3s ease;
-  animation: fadeIn 0.3s ease-in;
+  transition: opacity 0.2s ease;
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  max-width: 250px;
+  word-break: break-word;
+  
+  /* Add these to ensure positioning works correctly */
+  transform: none !important;
+  animation: none !important;
 }
 
 .area {
@@ -297,6 +393,8 @@ svg {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .project-header h3 {
@@ -306,6 +404,7 @@ svg {
   background: linear-gradient(90deg, #fff, #00ffff);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
 .project-content {
@@ -976,4 +1075,480 @@ svg {
   .leader-projects {
     grid-template-columns: 1fr;
   }
+}
+
+/* Update container width for better layout */
+.profile-container {
+  background: #1e1e1e;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+  width: 90%;
+  max-width: 1200px; /* Increased max-width */
+  margin: 40px auto;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Add a subtle glow effect to the container */
+.profile-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Add this for responsive grid layout */
+@media (min-width: 992px) {
+  .profile-layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 30px;
+  }
+  
+  .profile-sidebar {
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+  }
+  
+  .profile-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+  }
+}
+
+/* Add these improvements */
+.user-info, .stats-overview, .graph-container, .active-project-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-info:hover, .stats-overview:hover, .graph-container:hover, .active-project-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* Glowing border effect on hover */
+.profile-sidebar > div:hover::after,
+.profile-main > div:hover::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+  pointer-events: none;
+  animation: pulse 2s infinite;
+  z-index: -1;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.2; }
+  50% { opacity: 0.5; }
+  100% { opacity: 0.2; }
+}
+
+/* Improve stats-card design */
+.stats-overview {
+  margin-top: 30px;
+}
+
+.stat-card {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  margin-bottom: 15px;
+}
+
+/* Add section headers */
+.section-title {
+  font-size: 1.4em;
+  color: #00ffff;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* Style for chart area to ensure proper spacing */
+.chart-area {
+  margin-top: 20px;
+}
+
+/* Ensure the audit section uses the consistent header styling */
+.audit-stats-container .project-header {
+  margin-bottom: 25px;
+}
+
+/* Add these styles to fix the Audit Performance chart */
+.audit-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px 0;
+}
+
+.progress-ring-wrapper {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+  overflow: visible;
+  background: transparent;
+  border: none;
+}
+
+.ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 12;
+}
+
+.ring-progress {
+  fill: none;
+  stroke: url(#audit-gradient);
+  stroke-width: 12;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s ease;
+  filter: drop-shadow(0 0 6px rgba(0, 255, 255, 0.3));
+}
+
+.ring-label {
+  transform: rotate(90deg);
+  font-size: 16px;
+  text-anchor: middle;
+  fill: #888;
+  dominant-baseline: middle;
+}
+
+.ring-value {
+  transform: rotate(90deg);
+  font-size: 28px;
+  text-anchor: middle;
+  fill: #00ffff;
+  font-weight: bold;
+  dominant-baseline: middle;
+}
+
+/* Stat cards in audit section styling */
+.audit-stats-container .stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.audit-stats-container .stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.audit-stats-container .stat-card .stat-icon {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.audit-stats-container .stat-label {
+  display: block;
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+.audit-stats-container .stat-value {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.audit-stats-container .stat-card.success .stat-value {
+  color: #00ff00;
+  background: linear-gradient(90deg, #00cc00, #00ff00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.audit-stats-container .stat-card.fail .stat-value {
+  color: #ff4444;
+  background: linear-gradient(90deg, #ff0000, #ff4444);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Fix audited projects section */
+.audited-projects {
+  margin-top: 30px;
+}
+
+.audited-projects h4 {
+  color: #ffffff;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+}
+
+.projects-grid {
+  display: grid;
+  gap: 15px;
+}
+
+/* Ensure padding consistency */
+.audit-stats-container {
+  background: linear-gradient(145deg, #2a2a2a 0%, #1e1e1e 100%);
+  border-radius: 16px;
+  padding: 25px;
+  margin: 20px 0;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Add these styles at the end of your CSS file */
+/* Responsive chart styling */
+.chart-area {
+  width: 100%;
+  height: auto;
+  min-height: 300px;
+  position: relative;
+}
+
+.chart-area svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .chart-area {
+    min-height: 250px;
+  }
+}
+
+@media (max-width: 576px) {
+  .chart-area {
+    min-height: 200px;
+  }
+  
+  /* More compact chart on small screens */
+  .graph-container {
+    padding: 10px;
+  }
+}
+
+/* Audit Performance Chart styles */
+.performance-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+  gap: 30px;
+}
+
+.gauge-chart {
+  position: relative;
+  width: 300px;
+  height: 180px;
+  margin: 0 auto;
+}
+
+.gauge-chart svg {
+  overflow: visible;
+}
+
+.gauge-arc {
+  filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5));
+}
+
+.gauge-needle {
+  transform-origin: 150px 140px;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.7));
+  transition: transform 1.5s ease-in-out;
+}
+
+.audit-distribution {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.audit-distribution h4 {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.distribution-chart {
+  margin-bottom: 15px;
+}
+
+.distribution-chart svg {
+  overflow: visible;
+}
+
+.success-bar, .fail-bar {
+  transition: width 1.5s ease, x 1.5s ease;
+}
+
+.distribution-label {
+  opacity: 0;
+  animation: fadeIn 0.5s forwards;
+  animation-delay: 1.2s;
+}
+
+.distribution-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.legend-color.success {
+  background: linear-gradient(90deg, #00cc00, #00ff00);
+}
+
+.legend-color.fail {
+  background: #ff4444;
+}
+
+.legend-text {
+  color: #888;
+  font-size: 0.9em;
+}
+
+.audit-history-section {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.audit-history-section h4 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+.audit-history {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.audit-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 10px;
+  border-left: 4px solid transparent;
+  transition: transform 0.2s;
+}
+
+.audit-history-item:hover {
+  transform: translateX(5px);
+}
+
+.audit-history-item.success {
+  border-left-color: #00cc00;
+}
+
+.audit-history-item.fail {
+  border-left-color: #ff4444;
+}
+
+.audit-project-name {
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 5px;
+}
+
+.audit-date {
+  font-size: 0.85em;
+  color: #888;
+}
+
+.audit-grade {
+  font-weight: bold;
+  font-size: 1.2em;
+  padding: 5px 10px;
+  border-radius: 8px;
+}
+
+.audit-grade.success {
+  color: #00ff00;
+  background: rgba(0, 255, 0, 0.1);
+}
+
+.audit-grade.fail {
+  color: #ff4444;
+  background: rgba(255, 68, 68, 0.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Make audit performance chart responsive */
+@media (max-width: 768px) {
+  .gauge-chart {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+  }
+  
+  .audit-distribution,
+  .audit-history-section {
+    width: 100%;
+    padding: 15px;
+  }
+}
+
+
+.profile-header h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.5em;
+  background: linear-gradient(90deg, #fff, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }

@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.getElementById('campus').textContent = user.campus;
       document.getElementById('email').textContent = user.email;
       document.getElementById('created-at').textContent = new Date(user.createdAt).toLocaleString();
-      document.getElementById('audit-ratio').textContent = user.auditRatio;
+      document.getElementById('audit-ratio').textContent = user.auditRatio.toFixed(1);
       document.getElementById('address').textContent = user.attrs.arabicAddressStreet;
 
       // Fetch and display user stats
@@ -122,6 +122,7 @@ function formatXP(xp) {
 }
 
 // Update the chartData mapping
+// Update the createXPChart function to be responsive
 function createXPChart(data) {
   // Calculate cumulative XP
   let cumulativeXP = 0;
@@ -144,58 +145,24 @@ function createXPChart(data) {
     };
   });
   
-  // Dimensions
-  const margin = {top: 40, right: 50, bottom: 50, left: 70};
-  const width = 750 - margin.left - margin.right;
-  const height = 400 - margin.top - margin.bottom;
+  // Get container dimensions for responsive sizing
+  const container = document.querySelector('.graph-container');
   
-  // Find min and max values for scales
-  const minDate = chartData[0].date;
-  const maxDate = chartData[chartData.length - 1].date;
-  const maxXP = chartData[chartData.length - 1].total;
+  // IMPORTANT FIX: Save the header and reinsert it
+  const header = container.querySelector('.project-header');
+  const headerClone = header.cloneNode(true);
   
-  // Create SVG container
-  const svgContent = `
-    <svg width="${width + margin.left + margin.right}" height="${height + margin.top + margin.bottom}">
-      <defs>
-        <linearGradient id="line-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
-          <stop offset="0%" stop-color="#0056b3" />
-          <stop offset="100%" stop-color="#00ffff" />
-        </linearGradient>
-        <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-          <feMerge>
-            <feMergeNode in="coloredBlur"/>
-            <feMergeNode in="SourceGraphic"/>
-          </feMerge>
-        </filter>
-      </defs>
-      
-      <g transform="translate(${margin.left}, ${margin.top})">
-        <!-- Grid Lines -->
-        ${generateGridLines(width, height, 5, 5)}
-        
-        <!-- X and Y axes -->
-        ${generateAxes(width, height, minDate, maxDate, maxXP)}
-        
-        <!-- Area under the line -->
-        <path d="${generateAreaPath(chartData, width, height, minDate, maxDate, maxXP)}" 
-              fill="url(#line-gradient)" 
-              opacity="0.1" />
-        
-        <!-- Line chart -->
-        <path d="${generateLinePath(chartData, width, height, minDate, maxDate, maxXP)}"
-              stroke="url(#line-gradient)"
-              stroke-width="3"
-              fill="none"
-              filter="url(#glow)"
-              class="animated-line" />
-        
-        <!-- Data points -->
-        ${generateDataPoints(chartData, width, height, minDate, maxDate, maxXP)}
-      </g>
-    </svg>
-  `;
+  // Create a new div for the chart that will be responsive
+  const chartDiv = document.createElement('div');
+  chartDiv.className = 'chart-area';
+  
+  // Clear container but preserve structure
+  container.innerHTML = '';
+  
+  // Add back the header and then the chart
+  container.appendChild(headerClone);
+  container.appendChild(chartDiv);
+  container.style.position = 'relative';
   
   // Create tooltip element
   const tooltip = document.createElement('div');
@@ -209,75 +176,178 @@ function createXPChart(data) {
   tooltip.style.transition = 'all 0.3s ease';
   tooltip.style.zIndex = 1000;
   tooltip.style.backdropFilter = 'blur(4px)';
-  
-  // Add SVG and tooltip to container
-  const container = document.querySelector('.graph-container');
-  container.innerHTML = svgContent;
   container.appendChild(tooltip);
-  container.style.position = 'relative';
   
-  // Add event listeners to points
-  const points = container.querySelectorAll('.data-point');
-  points.forEach((point, i) => {
-    const data = chartData[i];
+  // Function to create and update the chart with current dimensions
+  function createResponsiveChart() {
+    // Get the current container width
+    const containerWidth = chartDiv.clientWidth || container.clientWidth - 40; // Subtract padding
     
-    point.addEventListener('mouseover', function(event) {
-      // Enlarge point
-      this.setAttribute('r', 8);
-      this.setAttribute('stroke-width', 3);
-      
-      // Show tooltip
-      tooltip.style.opacity = 1;
-      tooltip.innerHTML = `
-        <div style="padding: 8px">
-          <div style="font-weight: bold; color: #00ffff">${data.projectName}</div>
-          <div style="margin: 5px 0">
-            <span style="color: #888">XP Gained:</span> 
-            <span style="color: #fff">${formatXP(data.amount)}</span>
-          </div>
-          <div style="margin: 5px 0">
-            <span style="color: #888">Total XP:</span> 
-            <span style="color: #fff">${formatXP(data.total)}</span>
-          </div>
-          <div style="color: #888; font-size: 0.9em">
-            ${data.date.toLocaleDateString()}
-          </div>
-        </div>
-      `;
-      tooltip.style.left = (event.clientX - container.getBoundingClientRect().left) + 'px';
-      tooltip.style.top = (event.clientY - container.getBoundingClientRect().top - 100) + 'px';
-    });
+    // Set responsive dimensions with aspect ratio
+    const margin = {top: 40, right: 20, bottom: 50, left: 60};
+    const width = containerWidth - margin.left - margin.right;
+    const height = Math.min(400, window.innerHeight * 0.4) - margin.top - margin.bottom;
     
-    point.addEventListener('mouseout', function() {
-      // Restore point size
-      this.setAttribute('r', 6);
-      this.setAttribute('stroke-width', 2);
+    // Find min and max values for scales
+    const minDate = chartData[0].date;
+    const maxDate = chartData[chartData.length - 1].date;
+    const maxXP = chartData[chartData.length - 1].total;
+    
+    // Create SVG container with responsive viewBox
+    const svgContent = `
+      <svg width="100%" height="100%" viewBox="0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="line-gradient" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" stop-color="#0056b3" />
+            <stop offset="100%" stop-color="#00ffff" />
+          </linearGradient>
+          <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        
+        <g transform="translate(${margin.left}, ${margin.top})">
+          <!-- Grid Lines -->
+          ${generateGridLines(width, height, 5, 5)}
+          
+          <!-- X and Y axes -->
+          ${generateAxes(width, height, minDate, maxDate, maxXP)}
+          
+          <!-- Area under the line -->
+          <path d="${generateAreaPath(chartData, width, height, minDate, maxDate, maxXP)}" 
+                fill="url(#line-gradient)" 
+                opacity="0.1" />
+          
+          <!-- Line chart -->
+          <path d="${generateLinePath(chartData, width, height, minDate, maxDate, maxXP)}"
+                stroke="url(#line-gradient)"
+                stroke-width="3"
+                fill="none"
+                filter="url(#glow)"
+                class="animated-line" />
+          
+          <!-- Data points -->
+          ${generateDataPoints(chartData, width, height, minDate, maxDate, maxXP)}
+        </g>
+      </svg>
+    `;
+    
+    // Set the chart HTML
+    chartDiv.innerHTML = svgContent;
+    
+    // Add animation for line
+    const line = chartDiv.querySelector('.animated-line');
+    if (line) {
+      const length = line.getTotalLength();
+      line.style.strokeDasharray = length;
+      line.style.strokeDashoffset = length;
+      line.style.animation = 'drawLine 1.5s forwards';
+    }
+    
+    // Add event listeners to points
+    const points = chartDiv.querySelectorAll('.data-point');
+    points.forEach((point, i) => {
+      const data = chartData[i];
       
-      // Hide tooltip
-      tooltip.style.opacity = 0;
+      point.addEventListener('mouseover', function(event) {
+        // Enlarge point
+        this.setAttribute('r', 8);
+        this.setAttribute('stroke-width', 3);
+        
+        // Show tooltip
+        tooltip.style.opacity = 1;
+        tooltip.innerHTML = `
+          <div style="padding: 8px">
+            <div style="font-weight: bold; color: #00ffff">${data.projectName}</div>
+            <div style="margin: 5px 0">
+              <span style="color: #888">XP Gained:</span> 
+              <span style="color: #fff">${formatXP(data.amount)}</span>
+            </div>
+            <div style="margin: 5px 0">
+              <span style="color: #888">Total XP:</span> 
+              <span style="color: #fff">${formatXP(data.total)}</span>
+            </div>
+            <div style="color: #888; font-size: 0.9em">
+              ${data.date.toLocaleDateString()}
+            </div>
+          </div>
+        `;
+        
+        // FIXED: Position the tooltip next to the cursor instead of above it
+        const tooltipWidth = tooltip.offsetWidth;
+        const tooltipHeight = tooltip.offsetHeight;
+        
+        // Calculate position - keep it within the container
+        const containerRect = container.getBoundingClientRect();
+        const cursorXRelative = event.clientX - containerRect.left;
+        const cursorYRelative = event.clientY - containerRect.top;
+        
+        // Position to the right of cursor if there's room, otherwise to the left
+        let xPos = cursorXRelative + 15; // 15px offset from cursor
+        if (xPos + tooltipWidth > containerRect.width) {
+          xPos = cursorXRelative - tooltipWidth - 15;
+        }
+        
+        // Position centered vertically with the cursor, but ensure it stays in view
+        let yPos = cursorYRelative - (tooltipHeight / 2);
+        if (yPos < 0) {
+          yPos = 10; // Minimum 10px from top
+        } else if (yPos + tooltipHeight > containerRect.height) {
+          yPos = containerRect.height - tooltipHeight - 10; // Minimum 10px from bottom
+        }
+        
+        tooltip.style.left = `${xPos}px`;
+        tooltip.style.top = `${yPos}px`;
+        tooltip.style.transform = 'none'; // Remove any transform that might be affecting position
+      });
+      
+      point.addEventListener('mouseout', function() {
+        // Restore point size
+        this.setAttribute('r', 6);
+        this.setAttribute('stroke-width', 2);
+        
+        // Hide tooltip
+        tooltip.style.opacity = 0;
+      });
     });
+  }
+  
+  // Initial chart creation
+  createResponsiveChart();
+  
+  // Update chart on window resize
+  const resizeObserver = new ResizeObserver(() => {
+    createResponsiveChart();
   });
   
-  // Add animation for line
-  const line = container.querySelector('.animated-line');
-  const length = line.getTotalLength();
-  line.style.strokeDasharray = length;
-  line.style.strokeDashoffset = length;
-  line.style.animation = 'drawLine 1.5s forwards';
+  // Observe the chart div for size changes
+  resizeObserver.observe(container);
   
-  // Add style for animation
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes drawLine {
-      to {
-        stroke-dashoffset: 0;
+  // Add animation style
+  if (!document.getElementById('chart-animations')) {
+    const style = document.createElement('style');
+    style.id = 'chart-animations';
+    style.textContent = `
+      @keyframes drawLine {
+        to {
+          stroke-dashoffset: 0;
+        }
       }
-    }
-    .data-point {
-      transition: r 0.2s, stroke-width 0.2s;
-    }
-  `;
-  document.head.appendChild(style);
+      .data-point {
+        transition: r 0.2s, stroke-width 0.2s;
+      }
+      .chart-area {
+        width: 100%;
+        height: 100%;
+        min-height: 300px;
+      }
+    `;
+    document.head.appendChild(style);
+  }
   
   // Helper functions for generating SVG elements
   function generateGridLines(width, height, xCount, yCount) {
@@ -302,11 +372,13 @@ function createXPChart(data) {
     // X-axis (time)
     const xAxis = `<line x1="0" y1="${height}" x2="${width}" y2="${height}" stroke="#444" />`;
     
-    // X-axis ticks
+    // X-axis ticks - reduce number of ticks on smaller screens
+    const tickCount = width < 500 ? 3 : 5;
     let xTicks = '';
-    for (let i = 0; i <= 5; i++) {
-      const x = (width / 5) * i;
-      const tickDate = new Date(minDate.getTime() + (maxDate.getTime() - minDate.getTime()) * (i / 5));
+    
+    for (let i = 0; i <= tickCount; i++) {
+      const x = (width / tickCount) * i;
+      const tickDate = new Date(minDate.getTime() + (maxDate.getTime() - minDate.getTime()) * (i / tickCount));
       const month = tickDate.toLocaleString('default', { month: 'short' });
       const year = tickDate.getFullYear();
       
@@ -321,11 +393,13 @@ function createXPChart(data) {
     // Y-axis (XP)
     const yAxis = `<line x1="0" y1="0" x2="0" y2="${height}" stroke="#444" />`;
     
-    // Y-axis ticks
+    // Y-axis ticks - reduce number of ticks on smaller screens
+    const yTickCount = height < 300 ? 4 : 8;
     let yTicks = '';
-    for (let i = 0; i <= 8; i++) {
-      const y = height - (height / 8) * i;
-      const tickValue = (maxXP / 8) * i;
+    
+    for (let i = 0; i <= yTickCount; i++) {
+      const y = height - (height / yTickCount) * i;
+      const tickValue = (maxXP / yTickCount) * i;
       
       yTicks += `
         <line x1="-5" y1="${y}" x2="0" y2="${y}" stroke="#444" />
@@ -338,6 +412,7 @@ function createXPChart(data) {
     return xAxis + xTicks + yAxis + yTicks;
   }
   
+  // The rest of the helper functions remain unchanged
   function generateLinePath(data, width, height, minDate, maxDate, maxXP) {
     if (data.length === 0) return '';
     
@@ -374,7 +449,12 @@ function createXPChart(data) {
   }
   
   function generateDataPoints(data, width, height, minDate, maxDate, maxXP) {
-    return data.map((point, i) => {
+    // If there are too many points, only show a subset on smaller screens
+    const pointsToShow = width < 500 ? 
+      data.filter((_, i) => i === 0 || i === data.length - 1 || i % Math.ceil(data.length / 10) === 0) : 
+      data;
+      
+    return pointsToShow.map((point, i) => {
       const x = mapX(point.date, width, minDate, maxDate);
       const y = mapY(point.total, height, maxXP);
       const color = point.isBonus ? '#00ffff' : '#007BFF';
@@ -651,15 +731,15 @@ const auditStatsQuery = `{
   }
 }`;
 
-// Update the createAuditStatsChart function
+// Update the createAuditStatsChart function with a beautiful gauge chart
 function createAuditStatsChart(audits) {
   console.log('Raw audits:', audits);
 
-  // Filter and count valid audits (removed closureType check)
+  // Filter and count valid audits
   const validAudits = audits.filter(audit => audit?.grade != null);
 
   const stats = validAudits.reduce((acc, audit) => {
-    // Changed grade condition to check if it's passing (grade >= 1)
+    // Grade >= 1 means success
     if (audit.grade >= 1) {
       acc.success++;
     } else {
@@ -676,210 +756,160 @@ function createAuditStatsChart(audits) {
 
   const container = document.createElement('div');
   container.className = 'audit-stats-container';
+  
   container.innerHTML = `
-    <div class="audit-stats-header">
+    <div class="project-header">
       <h3>Audit Performance</h3>
-      <div class="stat-cards">
-        <div class="stat-card">
-          <div class="stat-icon">🎯</div>
-          <div class="stat-info">
-            <span class="stat-label">Total Audits</span>
-            <span class="stat-value">${totalAudits}</span>
-          </div>
+    </div>
+    
+    <div class="stat-cards">
+      <div class="stat-card">
+        <div class="stat-icon">🎯</div>
+        <div class="stat-info">
+          <span class="stat-label">Total Audits</span>
+          <span class="stat-value">${totalAudits}</span>
         </div>
-        <div class="stat-card success">
-          <div class="stat-icon">✅</div>
-          <div class="stat-info">
-            <span class="stat-label">Success Rate</span>
-            <span class="stat-value">${successRatio}%</span>
-          </div>
+      </div>
+      <div class="stat-card success">
+        <div class="stat-icon">✅</div>
+        <div class="stat-info">
+          <span class="stat-label">Success Rate</span>
+          <span class="stat-value">${successRatio}%</span>
         </div>
-        <div class="stat-card fail">
-          <div class="stat-icon">❌</div>
-          <div class="stat-info">
-            <span class="stat-label">Fail Rate</span>
-            <span class="stat-value">${failRatio}%</span>
-          </div>
+      </div>
+      <div class="stat-card fail">
+        <div class="stat-icon">❌</div>
+        <div class="stat-info">
+          <span class="stat-label">Fail Rate</span>
+          <span class="stat-value">${failRatio}%</span>
         </div>
       </div>
     </div>
 
-    <div class="audit-chart">
-      <div class="progress-ring-wrapper">
-        <svg class="progress-ring" width="200" height="200" viewBox="0 0 200 200">
-          <circle class="ring-bg" cx="100" cy="100" r="85" />
-          <circle class="ring-progress" cx="100" cy="100" r="85"
-            stroke-dasharray="${2 * Math.PI * 85}"
-            stroke-dashoffset="${calculateOffset(successRatio)}"
+    <div class="performance-chart-container">
+      <div class="gauge-chart">
+        <svg width="300" height="180" viewBox="0 0 300 180">
+          <defs>
+            <linearGradient id="gauge-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#ff4444" />
+              <stop offset="50%" stop-color="#ffaa00" />
+              <stop offset="100%" stop-color="#00cc00" />
+            </linearGradient>
+            <filter id="gauge-shadow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.3" />
+            </filter>
+            <filter id="glow-effect" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="2" result="blur" />
+              <feComposite in="SourceGraphic" in2="blur" operator="over" />
+            </filter>
+          </defs>
+          
+          <!-- Background arc -->
+          <path 
+            d="M 40 140 A 110 110 0 0 1 260 140" 
+            stroke="#2a2a2a"
+            stroke-width="20"
+            fill="none"
+            stroke-linecap="round"
           />
-          <text x="100" y="90" class="ring-label">Success Rate</text>
-          <text x="100" y="120" class="ring-value">${successRatio}%</text>
+          
+          <!-- Colored gauge arc -->
+          <path 
+            d="M 40 140 A 110 110 0 0 1 260 140" 
+            stroke="url(#gauge-gradient)"
+            stroke-width="20"
+            fill="none"
+            stroke-linecap="round"
+            stroke-dasharray="345.6"
+            stroke-dashoffset="${345.6 * (1 - parseFloat(successRatio) / 100)}"
+            class="gauge-arc"
+          />
+          
+          <!-- Gauge ticks -->
+          ${generateGaugeTicks()}
+          
+          
+          <!-- Labels -->
+          <text x="60" y="170" fill="#888888" font-size="14" text-anchor="middle">0%</text>
+          <text x="150" y="170" fill="#888888" font-size="14" text-anchor="middle">50%</text>
+          <text x="240" y="170" fill="#888888" font-size="14" text-anchor="middle">100%</text>
+          
+          <!-- Value display -->
+          <text x="150" y="90" fill="#ffffff" font-size="24" text-anchor="middle" font-weight="bold">${successRatio}%</text>
+          <text x="150" y="115" fill="#888888" font-size="14" text-anchor="middle">Success Rate</text>
         </svg>
       </div>
+
     </div>
 
-    <div class="audited-projects">
-      <h4>Audited Projects</h4>
-      <div class="projects-grid">
-        ${generateGroupCards(validAudits)}
-      </div>
-    </div>
+    ${generateGroupCards(validAudits)}
   `;
 
-  // Add the enhanced styles
-  const style = document.createElement('style');
-  style.textContent = `
-    .audit-stats-container {
-      background: linear-gradient(145deg, #2a2a2a 0%, #1e1e1e 100%);
-      border-radius: 16px;
-      padding: 30px;
-      margin: 20px 0;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      animation: slideIn 0.5s ease-out;
+  // Add the gauge needle animation after rendering
+  setTimeout(() => {
+    const gaugeArc = container.querySelector('.gauge-arc');
+    const gaugeNeedle = container.querySelector('.gauge-needle');
+    
+    if (gaugeArc) {
+      gaugeArc.style.transition = 'stroke-dashoffset 1.5s ease-in-out';
     }
-
-    .audit-stats-header h3 {
-      color: #00ffff;
-      font-size: 1.8em;
-      margin-bottom: 25px;
-      text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    
+    if (gaugeNeedle) {
+      gaugeNeedle.style.transition = 'transform 1.5s ease-in-out';
     }
-
-    .stat-cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
-      margin-bottom: 30px;
+    
+    const successBar = container.querySelector('.success-bar');
+    const failBar = container.querySelector('.fail-bar');
+    
+    if (successBar && failBar) {
+      successBar.style.transition = 'width 1.5s ease-in-out';
+      failBar.style.transition = 'width 1.5s ease-in-out, x 1.5s ease-in-out';
     }
+  }, 100);
 
-    .stat-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .stat-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(0, 255, 255, 0.1);
-    }
-
-    .stat-card.success { border-left: 4px solid #00ff00; }
-    .stat-card.fail { border-left: 4px solid #ff4444; }
-
-    .stat-icon {
-      font-size: 24px;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0, 255, 255, 0.1);
-      border-radius: 12px;
-    }
-
-    .stat-info {
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .stat-label {
-      color: #888;
-      font-size: 0.9em;
-    }
-
-    .stat-value {
-      color: #00ffff;
-      font-size: 1.8em;
-      font-weight: bold;
-    }
-
-    .progress-ring-wrapper {
-      display: flex;
-      justify-content: center;
-      margin: 40px 0;
-    }
-
-    .progress-ring {
-      transform: rotate(-90deg);
-      overflow: visible;
-    }
-
-    .ring-bg {
-      fill: none;
-      stroke: rgba(255, 255, 255, 0.1);
-      stroke-width: 10;
-    }
-
-    .ring-progress {
-      fill: none;
-      stroke: #00ffff;
-      stroke-width: 10;
-      stroke-linecap: round;
-      transition: stroke-dashoffset 1.5s ease;
-      filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.5));
-    }
-
-    .ring-label, .ring-value {
-      fill: #fff;
-      text-anchor: middle;
-      transform: rotate(90deg);
-    }
-
-    .ring-label {
-      font-size: 14px;
-      fill: #888;
-    }
-
-    .ring-value {
-      font-size: 24px;
-      font-weight: bold;
-      fill: #00ffff;
-    }
-
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 20px;
-    }
-
-    .group-card {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
-      padding: 20px;
-      transition: all 0.3s ease;
-    }
-
-    .group-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 15px rgba(0, 255, 255, 0.1);
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  `;
-
-  document.head.appendChild(style);
   document.querySelector('.audit-stats-section').appendChild(container);
-}
-
-// Helper function to calculate circle offset
-function calculateOffset(percentage) {
-  const circumference = 2 * Math.PI * 90;
-  return circumference - (percentage / 100 * circumference);
+  
+  // Helper function to generate gauge ticks
+  function generateGaugeTicks() {
+    let ticks = '';
+    const tickCount = 10;
+    
+    for (let i = 0; i <= tickCount; i++) {
+      const angle = -180 + i * (180 / tickCount);
+      const x1 = 150 + 100 * Math.cos(angle * Math.PI / 180);
+      const y1 = 140 + 100 * Math.sin(angle * Math.PI / 180);
+      const x2 = 150 + 110 * Math.cos(angle * Math.PI / 180);
+      const y2 = 140 + 110 * Math.sin(angle * Math.PI / 180);
+      
+      const isMainTick = i === 0 || i === tickCount / 2 || i === tickCount;
+      const tickWidth = isMainTick ? 3 : 1;
+      
+      ticks += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#666" stroke-width="${tickWidth}" />`;
+    }
+    
+    return ticks;
+  }
+  
+  // Helper function to generate audit history items
+  function generateAuditHistory(audits) {
+    return audits.map(audit => {
+      const date = new Date(audit.createdAt).toLocaleDateString();
+      const isPassing = audit.grade >= 1;
+      const projectName = audit.group?.object?.name || 'Unknown Project';
+      
+      return `
+        <div class="audit-history-item ${isPassing ? 'success' : 'fail'}">
+          <div class="audit-history-left">
+            <div class="audit-project-name">${projectName}</div>
+            <div class="audit-date">${date}</div>
+          </div>
+          <div class="audit-grade ${isPassing ? 'success' : 'fail'}">
+            ${audit.grade.toFixed(1)}%
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
 }
 
 // Update the generateGroupCards function

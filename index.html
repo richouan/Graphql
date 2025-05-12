@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport"="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile</title>
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap">
@@ -10,95 +10,137 @@
 <body>
   <div class="profile-container">
     <div class="profile-header">
-      <h1>Profile</h1>
+      <h3>ZONE01 PROFILE</h3>
       <button id="logout">Logout</button>
     </div>
-    <div class="user-info">
-      <h2>User Information</h2>
-      <p><strong>Username:</strong> <span id="username-display"></span></p>
-      <p><strong>First Name:</strong> <span id="first-name"></span></p>
-      <p><strong>Last Name:</strong> <span id="last-name"></span></p>
-      <p><strong>Campus:</strong> <span id="campus"></span></p>
-      <p><strong>Email:</strong> <span id="email"></span></p>
-      <p><strong>Account Created:</strong> <span id="created-at"></span></p>
-      <p><strong>Audit Ratio:</strong> <span id="audit-ratio"></span></p>
-      <p><strong>address:</strong> <span id="address"></span></p>
-
-    </div>
-    <div class="stats-overview">
-      <div class="stats-cards">
-        <div class="stat-card level-card">
-          <div class="stat-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#00ffff" stroke-width="2"/>
-              <path d="M2 17L12 22L22 17" stroke="#00ffff" stroke-width="2"/>
-              <path d="M2 12L12 17L22 12" stroke="#00ffff" stroke-width="2"/>
-            </svg>
+    
+    <div class="profile-layout">
+      <!-- Left column (sidebar) -->
+      <div class="profile-sidebar">
+        <div class="user-info">
+          <div class="project-header">
+            <h3>User Information</h3>
           </div>
-          <div class="stat-info">
-            <h3>Level</h3>
-            <div class="stat-value" id="user-level">0</div>
-            <div class="progress-bar">
-              <div class="progress" id="level-progress"></div>
+          
+          <div class="info-content">
+            <div class="info-row">
+              <div class="info-icon">👤</div>
+              <span class="label">Username:</span>
+              <span id="username-display" class="value"></span>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">🏷️</div>
+              <span class="label">First Name:</span>
+              <span id="first-name" class="value"></span>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">🏷️</div>
+              <span class="label">Last Name:</span>
+              <span id="last-name" class="value"></span>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">🏫</div>
+              <span class="label">Campus:</span>
+              <span id="campus" class="value"></span>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">📧</div>
+              <span class="label">Email:</span>
+              <span id="email" class="value"></span>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">🗓️</div>
+              <span class="label">Account Created:</span>
+              <span id="created-at" class="value"></span>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">⚖️</div>
+              <span class="label">Audit Ratio:</span>
+              <span id="audit-ratio" class="value"></span>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">📍</div>
+              <span class="label">Address:</span>
+              <span id="address" class="value"></span>
             </div>
           </div>
         </div>
-        <div class="stat-card xp-card">
-          <div class="stat-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-              <path d="M12 15.4L8.24 17.67L9.24 13.39L5.92 10.51L10.3 10.13L12 6.1L13.71 10.14L18.09 10.52L14.77 13.4L15.77 17.68L12 15.4Z" stroke="#00ffff" stroke-width="2"/>
-            </svg>
-          </div>
-          <div class="stat-info">
-            <h3>Total XP</h3>
-            <div class="stat-value" id="total-xp">0</div>
-            <div class="stat-subtitle">Experience Points</div>
+        
+        <div class="stats-overview">
+          <div class="stats-cards">
+            <div class="stat-card level-card">
+              <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="#00ffff" stroke-width="2"/>
+                  <path d="M2 17L12 22L22 17" stroke="#00ffff" stroke-width="2"/>
+                  <path d="M2 12L12 17L22 12" stroke="#00ffff" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <h3>Level</h3>
+                <div class="stat-value" id="user-level">0</div>
+                <div class="progress-bar">
+                  <div class="progress" id="level-progress"></div>
+                </div>
+              </div>
+            </div>
+            <div class="stat-card xp-card">
+              <div class="stat-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 15.4L8.24 17.67L9.24 13.39L5.92 10.51L10.3 10.13L12 6.1L13.71 10.14L18.09 10.52L14.77 13.4L15.77 17.68L12 15.4Z" stroke="#00ffff" stroke-width="2"/>
+                </svg>
+              </div>
+              <div class="stat-info">
+                <h3>Total XP</h3>
+                <div class="stat-value" id="total-xp">0</div>
+                <div class="stat-subtitle">Experience Points</div>
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+      
+      <!-- Right column (main content) -->
+      <div class="profile-main">
+        <div class="graph-container">
+          <div class="project-header">
+            <h3>XP Progress</h3>
+          </div>
+        </div>
+        
+        <div class="active-project-card">
+          <div class="project-header">
+            <h3>Current Project</h3>
+            <div class="project-status"></div>
+          </div>
+          <div class="project-content">
+            <div class="project-info">
+              <h3>Current Project</h3>
+              <div class="info-row">
+                <span class="label">Project:</span>
+                <span id="project-name" class="value">Loading...</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Status:</span>
+                <span id="project-status" class="value">Loading...</span>
+              </div>
+              <div class="info-row">
+                <span class="label">Started:</span>
+                <span id="project-start" class="value">Loading...</span>
+              </div>
+            </div>
+            <div class="team-section">
+              <h4>Team Members</h4>
+              <div id="team-members" class="team-grid"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="audit-stats-section"></div>
       </div>
     </div>
-    <div class="graph-container">
-      <div class="project-header">
-        <h3>XP Progress</h3>
-      </div>
-    </div>
-    <div class="active-project-card">
-      <div class="project-header">
-        <h3>Current Project</h3>
-        <div class="project-status"></div>
-      </div>
-      <div class="project-content">
-        <div class="project-info">
-          <h3>Current Project</h3>
-          <div class="info-row">
-            <span class="label">Project:</span>
-            <span id="project-name" class="value">Loading...</span>
-          </div>
-          <div class="info-row">
-            <span class="label">Status:</span>
-            <span id="project-status" class="value">Loading...</span>
-          </div>
-          <div class="info-row">
-            <span class="label">Started:</span>
-            <span id="project-start" class="value">Loading...</span>
-          </div>
-        </div>
-        <div class="team-section">
-          <h4>Team Members</h4>
-          <div id="team-members" class="team-grid"></div>
-        </div>
-        <div class="progress-section">
-          <div class="progress-header">
-          </div>
-        </div>
-        <div id="audit-history" class="audit-timeline"></div>
-      </div>
-    </div>
-
-    <div class="audit-stats-section"></div>
-
   </div>
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  
   <script src="scripts/main.js"></script>
   <script src="scripts/graphql.js"></script>
 </body>
