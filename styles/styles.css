@@ -29,7 +29,7 @@ body::before {
   pointer-events: none;
 }
 
-.login-container,
+
 .profile-container {
   background: #1e1e1e;
   padding: 40px;
@@ -1552,3 +1552,268 @@ svg {
   -webkit-text-fill-color: transparent;
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
+
+/* Modern Login Page Styles - Add to your styles.css */
+
+/* Login container */
+.login-container {
+    width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* Login card */
+.login-card {
+  background: linear-gradient(145deg, #212121 0%, #1a1a1a 100%);
+  width: 100%;
+  max-width: 450px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  animation: fadeIn 0.8s ease;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+/* Glowing border effect */
+.login-card::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  right: -1px;
+  bottom: -1px;
+  background: linear-gradient(45deg, rgba(0, 255, 255, 0.15), transparent, rgba(0, 255, 255, 0.15));
+  z-index: -1;
+  border-radius: 16px;
+  animation: borderGlow 6s ease-in-out infinite;
+}
+
+@keyframes borderGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* Login header */
+.login-header {
+  padding: 30px 25px 20px;
+  text-align: center;
+  position: relative;
+}
+
+.login-logo {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.login-logo svg {
+  filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
+  animation: pulse 2s infinite;
+  width: 70px;
+  height: 70px;
+}
+
+.login-header h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: white;
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #fff, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.login-subtitle {
+  color: #888;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+
+/* Login form */
+.login-form-container {
+  padding: 10px 30px 30px;
+}
+
+.animated-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.input-group:focus-within {
+  border-color: rgba(0, 255, 255, 0.4);
+  box-shadow: 0 0 0 2px rgba(0, 255, 255, 0.1);
+}
+
+.input-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  font-size: 18px;
+  opacity: 0.7;
+  transition: all 0.3s ease;
+}
+
+.input-group:focus-within .input-icon {
+  opacity: 1;
+}
+
+.login-form-container input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 18px 15px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.login-form-container input:focus {
+  outline: none;
+}
+
+.login-form-container input::placeholder {
+  color: #666;
+}
+
+.login-button {
+  position: relative;
+  margin-top: 15px;
+  padding: 18px;
+  background: linear-gradient(45deg, rgba(0, 123, 255, 0.8), rgba(0, 255, 255, 0.8));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.login-button:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(45deg, rgba(0, 123, 255, 1), rgba(0, 255, 255, 1));
+}
+
+.login-button span {
+  position: relative;
+  z-index: 1;
+}
+
+.button-glow {
+  position: absolute;
+  top: -50%;
+  left: -25%;
+  width: 150%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(35deg);
+  animation: buttonGlow 3s infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes buttonGlow {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.error-message {
+  color: #ff4444;
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: rgba(255, 0, 0, 0.1);
+  padding: 8px 12px;
+  border-radius: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.error-message:not(:empty) {
+  opacity: 1;
+}
+
+/* Login footer */
+.login-footer {
+  padding: 15px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.login-footer p {
+  color: #666;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Update to make it responsive */
+@media (max-width: 500px) {
+  .login-card {
+    max-width: 100%;
+  }
+  
+  .login-button {
+    padding: 15px;
+  }
+  
+  .login-header h2 {
+    font-size: 24px;
+  }
+}
+
+/* Add this to your CSS to style the logo image */
+/* .logo-image {
+  width: 100px;
+  height: auto;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
+  animation: pulse 2s infinite;
+} */
+/* 
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+} */
+ 

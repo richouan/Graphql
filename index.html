@@ -6,8 +6,97 @@
   <title>Profile</title>
   <link rel="stylesheet" href="styles/styles.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap">
+  <style>
+    /* Binary rain background styling */
+    .background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #121212 0%, #0a0a0a 100%);
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    .binary-column {
+      position: absolute;
+      top: -500px;
+      color: rgba(0, 255, 255, 0.15);
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.3);
+      font-family: monospace;
+      font-size: 1.2rem;
+      animation: fall linear infinite;
+      text-align: center;
+      width: 20px;
+    }
+    
+    .binary-digit {
+      display: block;
+      line-height: 1.2em;
+      transition: all 0.3s ease;
+    }
+    
+    .binary-digit.highlight {
+      color: rgba(0, 255, 255, 0.8);
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+    }
+    
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 30px 30px;
+      background-position: 0 0;
+      pointer-events: none;
+    }
+    
+    .glow-effect {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 0%, rgba(0, 255, 255, 0) 70%);
+      filter: blur(20px);
+      opacity: 0.7;
+      animation: float 15s infinite ease-in-out;
+    }
+    
+    @keyframes fall {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      85% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(2000px);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(-50px, 50px); }
+      50% { transform: translate(50px, -30px); }
+      75% { transform: translate(30px, 60px); }
+    }
+  </style>
 </head>
 <body>
+  <!-- Binary rain background -->
+  <div class="background-container" id="binary-background">
+    <div class="grid-overlay"></div>
+    <div class="glow-effect" style="top: 20%; left: 30%;"></div>
+    <div class="glow-effect" style="top: 60%; left: 70%;"></div>
+  </div>
+
   <div class="profile-container">
     <div class="profile-header">
       <h3>ZONE01 PROFILE</h3>
@@ -143,5 +232,82 @@
   
   <script src="scripts/main.js"></script>
   <script src="scripts/graphql.js"></script>
+  <script>
+    // Generate Matrix-style digital rain effect
+    document.addEventListener('DOMContentLoaded', function() {
+      const background = document.getElementById('binary-background');
+      const screenWidth = window.innerWidth;
+      const columnWidth = 20; // Width of each column in pixels
+      const columnCount = Math.floor(screenWidth / columnWidth); // Number of columns based on screen width
+      
+      // Create binary columns
+      for (let i = 0; i < columnCount; i++) {
+        createBinaryColumn(background, i * columnWidth);
+      }
+      
+      function createBinaryColumn(container, xPosition) {
+        const column = document.createElement('div');
+        column.className = 'binary-column';
+        column.style.left = `${xPosition}px`;
+        
+        // Random starting position (stagger effect)
+        const startPosition = -Math.floor(Math.random() * 500);
+        column.style.top = `${startPosition}px`;
+        
+        // Random animation duration between 10-20 seconds
+        const duration = 10 + Math.random() * 10;
+        column.style.animationDuration = `${duration}s`;
+        
+        // Random delay before starting animation
+        const delay = Math.random() * 8;
+        column.style.animationDelay = `${delay}s`;
+        
+        // Random opacity
+        const opacity = 0.1 + Math.random() * 0.5;
+        column.style.opacity = opacity;
+        
+        // Create the binary digits in the column (vertically)
+        const digitCount = 20 + Math.floor(Math.random() * 15);
+        for (let i = 0; i < digitCount; i++) {
+          const digit = document.createElement('span');
+          digit.className = 'binary-digit';
+          digit.textContent = Math.random() > 0.5 ? '1' : '0';
+          column.appendChild(digit);
+        }
+        
+        container.appendChild(column);
+        
+        // Remove and recreate column after animation finishes
+        setTimeout(() => {
+          column.remove();
+          createBinaryColumn(container, xPosition);
+        }, (delay + duration) * 1000);
+        
+        // Randomly change digits and add highlight effects
+        setInterval(() => {
+          const digits = column.querySelectorAll('.binary-digit');
+          if (digits.length > 0) {
+            // Randomly change some digits
+            digits.forEach(digit => {
+              if (Math.random() > 0.95) {
+                digit.textContent = Math.random() > 0.5 ? '1' : '0';
+              }
+            });
+            
+            // Randomly highlight a digit
+            if (Math.random() > 0.7) {
+              const randomIndex = Math.floor(Math.random() * digits.length);
+              const digit = digits[randomIndex];
+              digit.classList.add('highlight');
+              
+              setTimeout(() => {
+                digit.classList.remove('highlight');
+              }, 800);
+            }
+          }
+        }, 200);
+      }
+    });
+  </script>
 </body>
 </html>
