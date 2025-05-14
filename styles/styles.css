@@ -324,9 +324,9 @@ svg {
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-0px);
   border-color: rgba(0, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 255, 255, 0.1);
+  box-shadow: 0 1px 1px rgba(0, 255, 255, 0.1);
 }
 
 .stat-icon {
@@ -483,7 +483,7 @@ svg {
 }
 
 .team-member:hover {
-  transform: scale(1.05);
+  transform: scale(1.01);
 }
 
 .team-member.team-lead {
@@ -1907,7 +1907,7 @@ svg {
 .header-logo-image {
   width: 40px;
   height: auto;
-  filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.6));
+  filter: drop-shadow(0 0 2px rgba(0, 255, 255, 0.6));
 }
 
 .profile-header h3 {

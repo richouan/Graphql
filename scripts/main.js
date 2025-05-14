@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       document.getElementById('email').textContent = user.email;
       document.getElementById('created-at').textContent = new Date(user.createdAt).toLocaleString();
       document.getElementById('audit-ratio').textContent = user.auditRatio.toFixed(1);
-      document.getElementById('address').textContent = user.attrs.arabicAddressStreet;
+      document.getElementById('address').textContent = user.attrs.addressRegion;
 
       // Fetch and display user stats
       await fetchUserStats();
