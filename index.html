@@ -87,6 +87,63 @@
       50% { transform: translate(50px, -30px); }
       75% { transform: translate(30px, 60px); }
     }
+    
+    /* Header with logo styling */
+    .header-logo-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .header-logo-image {
+      width: 40px;
+      height: auto;
+    }
+    
+    .profile-header h3 {
+      margin: 0;
+      color: #fff;
+      font-size: 1.5em;
+      display: inline-block;
+    }
+    
+    .profile-header .gradient-text {
+      background: linear-gradient(90deg, #fff, #00ffff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    }
+    
+    /* New subtle circular logout button with power icon */
+    .logout-button {
+      position: relative;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, rgba(0, 123, 255, 0.2), rgba(0, 255, 255, 0.2));
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      color: rgba(0, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.15);
+    }
+    
+    .logout-button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(45deg, rgba(0, 123, 255, 0.4), rgba(0, 255, 255, 0.4));
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+    
+    .logout-icon {
+      font-size: 18px;
+      position: relative;
+      z-index: 1;
+    }
   </style>
 </head>
 <body>
@@ -99,8 +156,15 @@
 
   <div class="profile-container">
     <div class="profile-header">
-      <h3>ZONE01 PROFILE</h3>
-      <button id="logout">Logout</button>
+      <div class="header-logo-container">
+        <img src="https://learn.zone01oujda.ma/assets/img/logo.png" alt="ZONE01 Logo" class="header-logo-image">
+        <h3>ZONE01 <span class="gradient-text">PROFILE</span></h3>
+      </div>
+      <button id="logout" class="logout-button">
+        <span class="logout-icon">⏻</span>
+        <div class="button-glow"></div>
+        <span class="tooltip">Logout</span>
+      </button>
     </div>
     
     <div class="profile-layout">
