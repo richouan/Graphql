@@ -188,7 +188,6 @@ body::before {
   text-align: right;
 }
 
-/* Add a subtle hover effect for the info rows */
 .user-info .info-row:hover {
   background: rgba(255, 255, 255, 0.03);
   border-radius: 6px;
@@ -238,7 +237,6 @@ svg {
   max-width: 250px;
   word-break: break-word;
   
-  /* Add these to ensure positioning works correctly */
   transform: none !important;
   animation: none !important;
 }
@@ -637,7 +635,6 @@ svg {
   }
 }
 
-/* Audit Stats Specific Styles */
 .group-card {
   background: rgba(255, 255, 255, 0.05);
   border-radius: 12px;
@@ -702,7 +699,6 @@ svg {
   font-size: 0.9em;
 }
 
-/* Add this at the end of your existing styles */
 .audit-stats-container {
   margin-top: 40px !important;
   animation: fadeIn 0.5s ease-out;
@@ -719,7 +715,6 @@ svg {
   }
 }
 
-/* Updated Group Card Styles */
 .group-card {
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
@@ -851,7 +846,6 @@ svg {
   font-size: 0.8em;
 }
 
-/* Leader Section Styles */
 .leader-section {
   background: rgba(255, 255, 255, 0.02);
   border-radius: 16px;
@@ -993,7 +987,6 @@ svg {
   }
 }
 
-/* Preview container layout */
 .preview-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
@@ -1001,7 +994,6 @@ svg {
   margin-bottom: 20px;
 }
 
-/* Preview section layout */
 .preview-section {
   margin: 20px 0;
   display: grid;
@@ -1009,7 +1001,6 @@ svg {
   gap: 20px;
 }
 
-/* Modal grid layout */
 .modal-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -1017,7 +1008,6 @@ svg {
   padding: 20px;
 }
 
-/* Leader section layout */
 .leader-section {
   background: rgba(255, 255, 255, 0.02);
   border-radius: 16px;
@@ -1035,7 +1025,6 @@ svg {
   padding: 15px;
 }
 
-/* Group card styles */
 .group-card {
   background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
@@ -1046,7 +1035,6 @@ svg {
   flex-direction: column;
 }
 
-/* View all button */
 .view-all-btn {
   margin-top: 20px;
   width: 100%;
@@ -1060,7 +1048,6 @@ svg {
   transition: all 0.3s ease;
 }
 
-/* Modal styles */
 .modal-content {
   width: 90%;
   max-width: 1400px;
@@ -1075,14 +1062,12 @@ svg {
   max-height: calc(90vh - 80px);
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .leader-projects {
     grid-template-columns: 1fr;
   }
 }
 
-/* Update container width for better layout */
 .profile-container {
   backdrop-filter: blur(10px);
   padding: 20px 40px;
@@ -1095,7 +1080,6 @@ svg {
   border: 1px solid rgba(0, 255, 255, 0.1);
 }
 
-/* Add a subtle glow effect to the container */
 .profile-container::after {
   content: '';
   position: absolute;
@@ -1109,7 +1093,6 @@ svg {
   z-index: -1;
 }
 
-/* Add this for responsive grid layout */
 @media (min-width: 992px) {
   .profile-layout {
     display: grid;
@@ -1130,7 +1113,6 @@ svg {
   }
 }
 
-/* Add these improvements */
 .user-info, .stats-overview, .graph-container, .active-project-card {
   position: relative;
   overflow: hidden;
@@ -1142,7 +1124,6 @@ svg {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
 }
 
-/* Glowing border effect on hover */
 .profile-sidebar > div:hover::after,
 .profile-main > div:hover::after {
   content: '';
@@ -1164,7 +1145,6 @@ svg {
   100% { opacity: 0.2; }
 }
 
-/* Improve stats-card design */
 .stats-overview {
   margin-top: 30px;
 }
@@ -1175,7 +1155,6 @@ svg {
   margin-bottom: 15px;
 }
 
-/* Add section headers */
 .section-title {
   font-size: 1.4em;
   color: #00ffff;
@@ -1185,17 +1164,14 @@ svg {
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-/* Style for chart area to ensure proper spacing */
 .chart-area {
   margin-top: 20px;
 }
 
-/* Ensure the audit section uses the consistent header styling */
 .audit-stats-container .project-header {
   margin-bottom: 25px;
 }
 
-/* Add these styles to fix the Audit Performance chart */
 .audit-chart {
   display: flex;
   justify-content: center;
@@ -1248,7 +1224,6 @@ svg {
   dominant-baseline: middle;
 }
 
-/* Stat cards in audit section styling */
 .audit-stats-container .stat-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -1296,7 +1271,6 @@ svg {
   -webkit-text-fill-color: transparent;
 }
 
-/* Fix audited projects section */
 .audited-projects {
   margin-top: 30px;
 }
@@ -1312,7 +1286,6 @@ svg {
   gap: 15px;
 }
 
-/* Ensure padding consistency */
 .audit-stats-container {
   background: linear-gradient(145deg, #2a2a2a 0%, #1e1e1e 100%);
   border-radius: 16px;
@@ -1322,8 +1295,6 @@ svg {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Add these styles at the end of your CSS file */
-/* Responsive chart styling */
 .chart-area {
   width: 100%;
   height: auto;
@@ -1351,13 +1322,11 @@ svg {
     min-height: 200px;
   }
   
-  /* More compact chart on small screens */
   .graph-container {
     padding: 10px;
   }
 }
 
-/* Audit Performance Chart styles */
 .performance-chart-container {
   display: flex;
   flex-direction: column;
@@ -1532,7 +1501,6 @@ svg {
   to { opacity: 1; }
 }
 
-/* Make audit performance chart responsive */
 @media (max-width: 768px) {
   .gauge-chart {
     width: 100%;
@@ -1558,9 +1526,7 @@ svg {
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-/* Modern Login Page Styles - Add to your styles.css */
 
-/* Login container */
 .login-container {
     width: 90%;
   display: flex;
@@ -1569,7 +1535,6 @@ svg {
   position: relative;
 }
 
-/* Login card */
 .login-card {
   background: linear-gradient(145deg, #212121 0%, #1a1a1a 100%);
   width: 100%;
@@ -1583,7 +1548,6 @@ svg {
   border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-/* Glowing border effect */
 .login-card::after {
   content: '';
   position: absolute;
@@ -1602,7 +1566,6 @@ svg {
   50% { opacity: 1; }
 }
 
-/* Login header */
 .login-header {
   padding: 30px 25px 20px;
   text-align: center;
@@ -1644,7 +1607,6 @@ svg {
   margin-bottom: 5px;
 }
 
-/* Login form */
 .login-form-container {
   padding: 10px 30px 30px;
 }
@@ -1768,7 +1730,6 @@ svg {
   opacity: 1;
 }
 
-/* Login footer */
 .login-footer {
   padding: 15px;
   text-align: center;
@@ -1781,7 +1742,6 @@ svg {
   margin: 0;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -1793,7 +1753,6 @@ svg {
   }
 }
 
-/* Update to make it responsive */
 @media (max-width: 500px) {
   .login-card {
     max-width: 100%;
@@ -1822,7 +1781,6 @@ svg {
   100% { transform: scale(1); opacity: 1; }
 } */
 
-/* Unified card styling for all containers to match login card */
 .graph-container,
 .user-info,
 .active-project-card,
@@ -1836,7 +1794,6 @@ svg {
   overflow: hidden;
 }
 
-/* Add the glowing border effect after each element */
 .graph-container::after,
 .user-info::after,
 .active-project-card::after,
@@ -1855,13 +1812,11 @@ svg {
   pointer-events: none;
 }
 
-/* Make sure we have the borderGlow animation defined */
 @keyframes borderGlow {
   0%, 100% { opacity: 0.6; }
   50% { opacity: 1; }
 }
 
-/* Add consistent border-radius to match login card */
 .graph-container,
 .user-info,
 .active-project-card,
@@ -1871,7 +1826,6 @@ svg {
   margin-bottom: 20px;
 }
 
-/* Remove any existing box shadows that might interfere */
 .graph-container,
 .user-info,
 .active-project-card,
@@ -1880,7 +1834,6 @@ svg {
   box-shadow: none;
 }
 
-/* Reset hover animations that might interfere with the login card style */
 .user-info:hover,
 .stats-overview:hover,
 .graph-container:hover,
@@ -1890,14 +1843,12 @@ svg {
   box-shadow: none;
 }
 
-/* Reset any other hover effects */
 .profile-sidebar > div:hover::after,
 .profile-main > div:hover::after {
   box-shadow: none;
   animation: none;
 }
 
-/* Updated header logo and logout button styling */
 .header-logo-container {
   display: flex;
   align-items: center;
@@ -1925,7 +1876,6 @@ svg {
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
-/* New subtle circular logout button with icon */
 .logout-button {
   position: relative;
   width: 42px;
@@ -1974,7 +1924,6 @@ svg {
   z-index: 0;
 }
 
-/* Tooltip for logout button */
 .logout-button .tooltip {
   position: absolute;
   top: 115%;
