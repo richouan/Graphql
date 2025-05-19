@@ -43,7 +43,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
       terminalLines[1].classList.add('active');
       
       try {
-        fetch('https://learn.zone01oujda.ma/api/auth/signin', {
+        fetch('https://zone01-auth-proxy.onrender.com/auth', {
           method: 'POST',
           headers: {
             'Authorization': `Basic ${credentials}`
