@@ -108,8 +108,10 @@ const xpProgressQuery = `{
 function formatXP(xp) {
   if (xp < 1000) {
     return `${xp} Bytes`;
-  } else {
+  } else if (xp < 10000) {
     return `${(xp / 1000).toFixed(1)} KB`;
+  } else {
+    return `${xp / 10000}.toFixed(1) MB`;
   }
 }
 
