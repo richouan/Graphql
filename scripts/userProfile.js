@@ -111,7 +111,7 @@ function formatXP(xp) {
   } else if (xp < 10000) {
     return `${(xp / 1000).toFixed(1)} KB`;
   } else {
-    return `${xp / 1000}.toFixed(1)} MB`;
+    return `${(xp / 1000).toFixed(1)} MB`;
   }
 }
 
